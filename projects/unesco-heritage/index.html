@@ -699,11 +699,13 @@ function renderTimeline() {
     hovertemplate: '<b>%{x}</b><br>%{y} sites<extra></extra>'
   };
 
+  const brightFont = { family: "'JetBrains Mono', monospace", color: '#e2e8f0', size: 12 };
+
   const layout = {
     paper_bgcolor: THEME.paper, plot_bgcolor: THEME.bg,
     font: THEME.font, margin: { t: 10, b: 40, l: 40, r: 10 },
-    xaxis: { gridcolor: THEME.grid, tickfont: THEME.font, showgrid: false },
-    yaxis: { gridcolor: THEME.grid, tickfont: THEME.font },
+    xaxis: { gridcolor: THEME.grid, tickfont: brightFont, showgrid: false },
+    yaxis: { gridcolor: THEME.grid, tickfont: brightFont },
     showlegend: false,
     hoverlabel: { bgcolor: '#1e2530', font: { family: "'JetBrains Mono',monospace", size: 12 } }
   };
@@ -725,15 +727,17 @@ function renderCategory() {
     labels, values,
     type: 'pie', hole: 0.55,
     marker: { colors, line: { color: 'oklch(0.20 0.014 240)', width: 2 } },
-    textfont: { family: "'JetBrains Mono',monospace", size: 11 },
+    textfont: { family: "'JetBrains Mono',monospace", size: 12, color: '#e2e8f0' },
     hovertemplate: '<b>%{label}</b><br>%{value} sites (%{percent})<extra></extra>'
   };
+
+  const brightFont = { family: "'JetBrains Mono', monospace", color: '#e2e8f0', size: 12 };
 
   const layout = {
     paper_bgcolor: THEME.paper, plot_bgcolor: THEME.bg,
     font: THEME.font, margin: { t: 10, b: 10, l: 10, r: 10 },
     showlegend: true,
-    legend: { font: THEME.font, bgcolor: 'transparent', x: 0.5, xanchor: 'center', y: -0.1, orientation: 'h' },
+    legend: { font: brightFont, bgcolor: 'transparent', x: 0.5, xanchor: 'center', y: -0.1, orientation: 'h' },
     hoverlabel: { bgcolor: '#1e2530', font: { family: "'JetBrains Mono',monospace", size: 12 } }
   };
 
@@ -749,7 +753,8 @@ function renderCountries() {
   const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0,15);
   const countries = sorted.map(d => d[0]).reverse();
   const values = sorted.map(d => d[1]).reverse();
-  const barColors = values.map((v, i) => i === values.length-1 ? THEME.mint : `oklch(0.86 0.18 165 / ${0.3 + (i/values.length)*0.5})`);
+  const dimColor = 'rgba(74, 222, 128, 0.25)';
+  const barColors = values.map(() => dimColor);
 
   const trace = {
     x: values, y: countries,
