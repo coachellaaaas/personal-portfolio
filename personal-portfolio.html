@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Piyathida Suwannakat — AI · ML · Data Science</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --radius: 0.5rem;
+    --background: oklch(0.16 0.012 240);
+    --foreground: oklch(0.96 0.005 240);
+    --card: oklch(0.20 0.014 240);
+    --primary: oklch(0.86 0.18 165);
+    --primary-foreground: oklch(0.16 0.012 240);
+    --primary-glow: oklch(0.92 0.20 160);
+    --secondary: oklch(0.26 0.018 240);
+    --muted-foreground: oklch(0.68 0.018 240);
+    --border: oklch(0.28 0.018 240);
+    --grid: oklch(0.24 0.018 240 / 0.6);
+    --mint: oklch(0.86 0.18 165);
+    --amber: oklch(0.82 0.16 75);
+    --violet: oklch(0.72 0.18 295);
+    --paper: oklch(0.20 0.014 240);
+    --paper-tint: oklch(0.24 0.018 240);
+    --paper-ink: oklch(0.96 0.005 240);
+    --paper-muted: oklch(0.68 0.018 240);
+    --paper-line: oklch(0.30 0.018 240);
+    --paper-accent: oklch(0.86 0.18 165);
+    --shadow-card: 0 8px 30px -12px oklch(0 0 0 / 0.5);
+    --shadow-glow: 0 0 40px -10px oklch(0.86 0.18 165 / 0.5);
+    --radius-xl: calc(var(--radius) + 4px);
+  }
+
+  html, body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  ::selection { background: var(--mint); color: var(--background); }
+
+  a { color: inherit; text-decoration: none; }
+
+  .page-wrapper {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+  }
+
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 80%);
+  }
+
+  .bg-aurora {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 20% 0%, oklch(0.86 0.18 165 / 0.18), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 10%, oklch(0.72 0.18 295 / 0.14), transparent 60%);
+  }
+
+  .container {
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    .container { padding: 3rem 2.5rem; }
+  }
+
+  /* PANEL */
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* PAPER */
+  .paper {
+    background: var(--paper);
+    color: var(--paper-ink);
+    border: 1px solid var(--paper-line);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 1px 0 oklch(0 0 0 / 0.04), 0 8px 30px -16px oklch(0 0 0 / 0.25);
+    transition: border-color 240ms ease, box-shadow 240ms ease, transform 240ms ease;
+    outline: none;
+  }
+  .paper:hover {
+    border-color: color-mix(in oklab, var(--mint) 55%, var(--paper-line));
+    box-shadow:
+      0 1px 0 oklch(0 0 0 / 0.04),
+      0 16px 50px -20px oklch(0 0 0 / 0.5),
+      0 0 0 1px color-mix(in oklab, var(--mint) 25%, transparent),
+      0 0 60px -20px color-mix(in oklab, var(--violet) 60%, transparent);
+    transform: translateY(-2px);
+  }
+
+  /* TYPOGRAPHY UTILITIES */
+  .font-mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  .font-serif { font-family: 'Fraunces', ui-serif, Georgia, serif; font-feature-settings: "ss01"; }
+  .text-gradient {
+    background: linear-gradient(135deg, var(--mint), var(--violet));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-primary { color: var(--primary); }
+  .text-muted { color: var(--muted-foreground); }
+
+  /* GLOW RING */
+  .glow-ring { box-shadow: var(--shadow-glow); }
+
+  /* PULSE DOT */
+  .pulse-dot::before {
+    content: "";
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 999px;
+    background: var(--mint);
+    margin-right: 8px;
+    box-shadow: 0 0 12px var(--mint);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+
+  /* TAGS */
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    background: var(--secondary);
+    border: 1px solid var(--border);
+    color: oklch(0.96 0.005 240 / 0.8);
+    transition: border-color 200ms, color 200ms;
+  }
+  .tag:hover { border-color: oklch(0.86 0.18 165 / 0.4); color: var(--primary); }
+
+  .paper-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 0.25rem 0.625rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--paper-line);
+    color: oklch(0.96 0.005 240 / 0.7);
+    transition: border-color 200ms ease, color 200ms ease, background 200ms ease;
+  }
+  .paper:hover .paper-tag {
+    border-color: color-mix(in oklab, var(--mint) 35%, var(--paper-line));
+    color: color-mix(in oklab, var(--mint) 80%, var(--paper-ink));
+  }
+  .paper-tag:hover {
+    border-color: var(--mint);
+    color: var(--mint);
+    background: color-mix(in oklab, var(--mint) 10%, transparent);
+  }
+
+  /* PAPER LABEL */
+  .paper-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--paper-accent);
+  }
+  .paper-label::before {
+    content: "";
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--paper-accent);
+    flex-shrink: 0;
+  }
+
+  /* HEADER */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .logo-badge {
+    width: 36px; height: 36px;
+    border-radius: 0.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--violet));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--primary-foreground);
+    font-size: 13px;
+  }
+
+  .logo-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted-foreground);
+  }
+
+  nav { display: none; align-items: center; gap: 1.5rem; }
+  @media (min-width: 768px) { nav { display: flex; } }
+
+  nav a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted-foreground);
+    transition: color 200ms;
+  }
+  nav a:hover { color: var(--foreground); }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    transition: opacity 200ms;
+  }
+  .btn-primary:hover { opacity: 0.9; }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--foreground);
+    font-size: 14px;
+    transition: background 200ms;
+  }
+  .btn-outline:hover { background: var(--secondary); }
+
+  /* GRID SYSTEM */
+  .grid-12 { display: grid; gap: 1.25rem; }
+  @media (min-width: 1024px) { .grid-12 { grid-template-columns: repeat(12, 1fr); } }
+
+  .col-8 { grid-column: span 1; }
+  .col-4 { grid-column: span 1; }
+  .col-12 { grid-column: span 1; }
+  @media (min-width: 1024px) {
+    .col-8 { grid-column: span 8; }
+    .col-4 { grid-column: span 4; }
+    .col-12 { grid-column: span 12; }
+  }
+
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  @media (min-width: 1024px) { .grid-4 { grid-template-columns: repeat(4, 1fr); } }
+
+  /* SECTION SPACING */
+  section { margin-bottom: 1.5rem; }
+
+  /* HERO */
+  .hero-panel { padding: 2rem 2.5rem; position: relative; overflow: hidden; }
+  @media (min-width: 1024px) { .hero-panel { padding: 2.5rem; } }
+
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  .hero-name {
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-bio {
+    margin-top: 1.5rem;
+    font-size: 1.125rem;
+    color: var(--muted-foreground);
+    max-width: 42rem;
+    line-height: 1.7;
+  }
+
+  .hero-ctas {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 14px;
+  }
+
+  .btn-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-size: 14px;
+    transition: opacity 200ms;
+  }
+  .btn-email:hover { opacity: 0.9; }
+
+  .hero-meta {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted-foreground);
+  }
+
+  .hero-meta span { display: inline-flex; align-items: center; gap: 0.375rem; }
+  .hero-meta .accent { color: var(--primary); }
+
+  /* STATUS CARD */
+  .status-panel { padding: 1.5rem 1.75rem; display: flex; flex-direction: column; }
+  @media (min-width: 1024px) { .status-panel { padding: 1.75rem; } }
+
+  .status-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  .status-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted-foreground);
+  }
+
+  .status-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 0.25rem 0.5rem;
+    border-radius: 999px;
+    background: oklch(0.86 0.18 165 / 0.15);
+    color: var(--primary);
+  }
+
+  .status-rows { display: flex; flex-direction: column; gap: 1rem; }
+
+  .status-row { display: flex; align-items: flex-start; gap: 0.75rem; }
+
+  .status-icon {
+    width: 36px; height: 36px;
+    border-radius: 0.375rem;
+    background: var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .status-icon svg { width: 16px; height: 16px; color: var(--primary); }
+
+  .status-info { min-width: 0; }
+  .status-info-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted-foreground);
+    display: block;
+  }
+  .status-info-value { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .status-info-sub { font-size: 12px; color: var(--muted-foreground); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .status-cta {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--primary);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: gap 200ms;
+  }
+  .status-cta:hover { gap: 0.5rem; }
+
+  /* STATS */
+  .stat-card { padding: 1.25rem 1.5rem; }
+  .stat-card:hover { border-color: oklch(0.86 0.18 165 / 0.4); }
+  .stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+  .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted-foreground); }
+  .stat-icon { width: 16px; height: 16px; color: var(--muted-foreground); transition: color 200ms; }
+  .stat-card:hover .stat-icon { color: var(--primary); }
+  .stat-value { font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 600; letter-spacing: -0.02em; }
+  .stat-sub { margin-top: 0.25rem; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted-foreground); }
+
+  /* PANEL HEADER */
+  .panel-header { display: flex; align-items: center; justify-content: space-between; }
+  .panel-header-left { display: flex; align-items: center; gap: 0.625rem; }
+  .panel-header-left svg { width: 16px; height: 16px; color: var(--primary); }
+  .panel-header-title { font-size: 1.125rem; font-weight: 600; letter-spacing: -0.01em; }
+  .panel-header-hint { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted-foreground); }
+
+  /* EXPERIENCE */
+  .exp-panel { padding: 1.75rem 2rem; }
+  @media (min-width: 1024px) { .exp-panel { padding: 2rem; } }
+
+  .exp-list { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .exp-item { position: relative; padding-left: 1.5rem; border-left: 1px solid var(--border); }
+
+  .exp-dot {
+    position: absolute;
+    left: -5px; top: 6px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--primary);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .exp-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.5rem; }
+  .exp-role { font-size: 1.125rem; font-weight: 600; }
+  .exp-period { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted-foreground); }
+  .exp-org { font-size: 14px; color: var(--primary); margin-top: 2px; }
+  .exp-location { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted-foreground); margin-top: 2px; }
+
+  .exp-bullets { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.375rem; }
+  .exp-bullet { display: flex; gap: 0.5rem; font-size: 14px; color: var(--muted-foreground); line-height: 1.6; }
+  .exp-bullet-arrow { color: var(--primary); margin-top: 6px; flex-shrink: 0; }
+
+  .exp-tags { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.375rem; }
+
+  /* SKILLS */
+  .skills-panel { padding: 1.75rem 2rem; }
+  @media (min-width: 1024px) { .skills-panel { padding: 2rem; } }
+
+  .skills-list { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+  .skill-cat-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted-foreground); margin-bottom: 0.5rem; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+
+  /* PROJECTS */
+  .featured-paper { padding: 2rem 2.5rem; }
+  @media (min-width: 1024px) { .featured-paper { padding: 2.5rem; } }
+
+  .featured-inner { display: grid; gap: 2rem; align-items: center; }
+  @media (min-width: 1024px) { .featured-inner { grid-template-columns: 7fr 5fr; } }
+
+  .featured-tags { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+  .featured-footer {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--paper-line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--paper-muted);
+  }
+
+  .featured-link {
+    color: var(--paper-accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: text-decoration 200ms;
+  }
+  .featured-link:hover { text-decoration: underline; }
+  .featured-link svg { width: 12px; height: 12px; }
+
+  .project-paper { padding: 2rem; position: relative; }
+  .project-paper-tags { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+  .inprogress-badge {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 0.25rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--paper-line);
+    color: var(--paper-accent);
+  }
+
+  .projects-grid { display: grid; gap: 1.25rem; }
+  @media (min-width: 1024px) { .projects-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  /* EDUCATION */
+  .edu-panel { padding: 1.75rem 2rem; }
+  @media (min-width: 1024px) { .edu-panel { padding: 2rem; } }
+
+  /* SNN DIAGRAM */
+  .snn-wrapper {
+    position: relative;
+    border-radius: 1rem;
+    background: var(--paper-tint);
+    padding: 1.5rem;
+    overflow: hidden;
+  }
+
+  .snn-badge {
+    position: absolute;
+    bottom: 0.75rem; right: 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--paper-line);
+    background: var(--paper);
+    padding: 0.375rem 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--paper-accent);
+    box-shadow: 0 2px 8px oklch(0 0 0 / 0.2);
+  }
+
+  /* CTA */
+  .cta-panel { padding: 2rem 2.5rem; position: relative; overflow: hidden; }
+  @media (min-width: 1024px) { .cta-panel { padding: 2.5rem; } }
+
+  .cta-glow {
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 256px; height: 256px;
+    border-radius: 50%;
+    background: oklch(0.86 0.18 165 / 0.2);
+    filter: blur(48px);
+    pointer-events: none;
+  }
+
+  .cta-inner { position: relative; display: grid; gap: 1.5rem; align-items: center; }
+  @media (min-width: 768px) { .cta-inner { grid-template-columns: 2fr 1fr; } }
+
+  .cta-title { font-size: clamp(1.5rem, 3vw, 1.875rem); font-weight: 600; letter-spacing: -0.02em; }
+  .cta-sub { margin-top: 0.5rem; font-size: 14px; color: var(--muted-foreground); }
+  .cta-actions { display: flex; justify-content: flex-start; gap: 0.75rem; }
+  @media (min-width: 768px) { .cta-actions { justify-content: flex-end; } }
+
+  .btn-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.375rem;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-weight: 500;
+    font-size: 15px;
+    transition: opacity 200ms;
+  }
+  .btn-cta:hover { opacity: 0.9; }
+  .btn-cta svg { width: 16px; height: 16px; }
+
+  /* FOOTER */
+  footer {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted-foreground);
+  }
+
+  /* SVG ICONS (inline) */
+  svg { display: inline-block; vertical-align: middle; }
+
+  /* ANIMATIONS */
+  @keyframes snn-spike {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  @keyframes node-pulse {
+    0%, 100% { opacity: 0.12; r: 11; }
+    50% { opacity: 0.3; r: 16; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrapper">
+  <div class="bg-grid"></div>
+  <div class="bg-aurora"></div>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <header>
+      <div class="logo">
+        <div class="logo-badge">PS</div>
+        <div class="logo-text"><span class="pulse-dot"></span>portfolio.live</div>
+      </div>
+      <nav>
+        <a href="#overview">overview</a>
+        <a href="#experience">experience</a>
+        <a href="#projects">projects</a>
+        <a href="#skills">skills</a>
+        <a href="mailto:code37.piyathida@outlook.com" class="btn-primary">
+          Contact
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <section id="overview">
+      <div class="grid-12">
+        <!-- Hero panel -->
+        <div class="panel hero-panel col-8">
+          <div class="hero-eyebrow">~/ ai · ml · scientific software</div>
+          <h1 class="hero-name">Piyathida <br><span class="text-gradient">Suwannakat</span></h1>
+          <p class="hero-bio">
+            Computer Science &amp; Artificial Intelligence graduate from the University of Sussex.
+            I build machine learning systems, data pipelines, and scientific software —
+            from CNN-driven vision to spiking neural networks on GPU.
+          </p>
+          <div class="hero-ctas">
+            <a href="mailto:code37.piyathida@outlook.com" class="btn-email glow-ring">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              code37.piyathida@outlook.com
+            </a>
+            <a href="https://github.com/coachellaaaas" target="_blank" rel="noreferrer" class="btn-outline">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+              github.com/coachellaaaas
+            </a>
+            <a href="https://www.linkedin.com/in/piyathida-suwannakat" target="_blank" rel="noreferrer" class="btn-outline">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              piyathida-suwannakat
+            </a>
+          </div>
+          <div class="hero-meta">
+            <span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              Woking, England, United Kingdom
+            </span>
+            <span class="accent">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              visa sponsorship not required
+            </span>
+          </div>
+        </div>
+
+        <!-- Status card -->
+        <div class="panel status-panel col-4">
+          <div class="status-header">
+            <span class="status-label">status</span>
+            <span class="status-badge pulse-dot">open to roles</span>
+          </div>
+          <div class="status-rows">
+            <!-- Education -->
+            <div class="status-row">
+              <div class="status-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              </div>
+              <div class="status-info">
+                <span class="status-info-label">Education</span>
+                <div class="status-info-value">BSc Computer Science & AI</div>
+                <div class="status-info-sub">University of Sussex · 2:1</div>
+              </div>
+            </div>
+            <!-- Latest role -->
+            <div class="status-row">
+              <div class="status-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              </div>
+              <div class="status-info">
+                <span class="status-info-label">Latest role</span>
+                <div class="status-info-value">Data Science Intern</div>
+                <div class="status-info-sub">OESON · 2024 – 2025</div>
+              </div>
+            </div>
+            <!-- Focus -->
+            <div class="status-row">
+              <div class="status-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.04"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.04"/></svg>
+              </div>
+              <div class="status-info">
+                <span class="status-info-label">Focus</span>
+                <div class="status-info-value">SNNs · Transfer learning · EventProp</div>
+                <div class="status-info-sub">GPU-accelerated Neural Networks (GeNN)</div>
+              </div>
+            </div>
+            <!-- Stack -->
+            <div class="status-row">
+              <div class="status-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+              </div>
+              <div class="status-info">
+                <span class="status-info-label">Stack</span>
+                <div class="status-info-value">Python · TensorFlow · PyTorch</div>
+                <div class="status-info-sub">SQL · Tableau · Power BI · Excel</div>
+              </div>
+            </div>
+          </div>
+          <a href="#contact" class="status-cta">available for full-time →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section>
+      <div class="grid-4">
+        <div class="panel stat-card" style="transition: border-color 200ms;">
+          <div class="stat-header">
+            <span class="stat-label">Classification accuracy</span>
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div class="stat-value" style="color: var(--mint);">82%</div>
+          <div class="stat-sub">CNN · 50k images</div>
+        </div>
+        <div class="panel stat-card">
+          <div class="stat-header">
+            <span class="stat-label">SNN vs CNN baseline</span>
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.04"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.04"/></svg>
+          </div>
+          <div class="stat-value" style="color: var(--violet);">+35%</div>
+          <div class="stat-sub">40% less training data</div>
+        </div>
+        <div class="panel stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Lines of code shipped</span>
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <div class="stat-value" style="color: var(--amber);">10k+</div>
+          <div class="stat-sub">Python · HTML · PyScript</div>
+        </div>
+        <div class="panel stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Peer-reviewed pubs</span>
+            <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="stat-value" style="color: var(--mint);">1</div>
+          <div class="stat-sub">pocketTHERM, RAEng-funded</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE + SKILLS -->
+    <section>
+      <div class="grid-12">
+        <!-- Experience -->
+        <div class="panel exp-panel col-8" id="experience">
+          <div class="panel-header">
+            <div class="panel-header-left">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              <h2 class="panel-header-title">Experience</h2>
+            </div>
+            <span class="panel-header-hint">2 roles · UK</span>
+          </div>
+          <div class="exp-list">
+            <!-- Role 1 -->
+            <div class="exp-item">
+              <div class="exp-dot"></div>
+              <div class="exp-top">
+                <h3 class="exp-role">Data Science Intern</h3>
+                <span class="exp-period">Nov 2024 — Feb 2025</span>
+              </div>
+              <div class="exp-org">OESON — IT Services &amp; Consulting</div>
+              <div class="exp-location">United Kingdom · Remote</div>
+              <ul class="exp-bullets">
+                <li class="exp-bullet"><span class="exp-bullet-arrow">▸</span><span>Developed a facial recognition system using CNNs in TensorFlow, reaching 82% accuracy on 50,000+ labelled images.</span></li>
+                <li class="exp-bullet"><span class="exp-bullet-arrow">▸</span><span>Built end-to-end data pipelines for image preprocessing, augmentation, and feature extraction.</span></li>
+                <li class="exp-bullet"><span class="exp-bullet-arrow">▸</span><span>Applied t-tests and ANOVA to validate model robustness across data subsets.</span></li>
+                <li class="exp-bullet"><span class="exp-bullet-arrow">▸</span><span>Visualised model performance and findings in Tableau and Seaborn for technical review.</span></li>
+              </ul>
+              <div class="exp-tags">
+                <span class="tag">TensorFlow</span><span class="tag">Statistics</span><span class="tag">CNN</span><span class="tag">Seaborn</span><span class="tag">Matplotlib</span><span class="tag">Tableau</span><span class="tag">Power BI</span>
+              </div>
+            </div>
+            <!-- Role 2 -->
+            <div class="exp-item">
+              <div class="exp-dot"></div>
+              <div class="exp-top">
+                <h3 class="exp-role">Research Software Engineer Assistant</h3>
+                <span class="exp-period">Jun 2023 — Aug 2023</span>
+              </div>
+              <div class="exp-org">University of Sussex · Royal Academy of Engineering funded</div>
+              <div class="exp-location">Brighton, United Kingdom</div>
+              <ul class="exp-bullets">
+                <li class="exp-bullet"><span class="exp-bullet-arrow">▸</span><span>Contributed to pocketTHERM, an open-source web tool for thermal energy system design (ORC plants &amp; heat pumps), used live by UK engineers.</span></li>
+                <li class="exp-bullet"><span class="exp-bullet-arrow">▸</span><span>Translated MATLAB codebase to Python — improving calculation speed and visualisation quality.</span></li>
+                <li class="exp-bullet"><span class="exp-bullet-arrow">▸</span><span>Shipped 10,000+ lines across Python and HTML to deliver the full browser-based app via PyScript.</span></li>
+                <li class="exp-bullet"><span class="exp-bullet-arrow">▸</span><span>Acknowledged in peer-reviewed publication: White, M.T., pocketTHERM — A web-based tool for teaching non-ideal thermodynamic cycles.</span></li>
+              </ul>
+              <div class="exp-tags">
+                <span class="tag">Python</span><span class="tag">PyScript</span><span class="tag">MATLAB → Python</span><span class="tag">JavaScript</span><span class="tag">HTML/CSS</span><span class="tag">Open Source</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="panel skills-panel col-4" id="skills">
+          <div class="panel-header">
+            <div class="panel-header-left">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+              <h2 class="panel-header-title">Skills</h2>
+            </div>
+            <span class="panel-header-hint">stack</span>
+          </div>
+          <div class="skills-list">
+            <div>
+              <div class="skill-cat-label">Languages</div>
+              <div class="skill-tags">
+                <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">JavaScript</span><span class="tag">HTML/CSS</span><span class="tag">C++ (Learning)</span>
+              </div>
+            </div>
+            <div>
+              <div class="skill-cat-label">ML / Data</div>
+              <div class="skill-tags">
+                <span class="tag">TensorFlow</span><span class="tag">PyTorch</span><span class="tag">scikit-learn</span><span class="tag">NumPy</span><span class="tag">Pandas</span><span class="tag">SciPy</span>
+              </div>
+            </div>
+            <div>
+              <div class="skill-cat-label">Viz & Tools</div>
+              <div class="skill-tags">
+                <span class="tag">Git/GitHub</span><span class="tag">Jupyter</span><span class="tag">Tableau</span><span class="tag">Power BI</span><span class="tag">Matplotlib</span><span class="tag">Seaborn</span><span class="tag">Microsoft Excel</span>
+              </div>
+            </div>
+            <div>
+              <div class="skill-cat-label">Specialised</div>
+              <div class="skill-tags">
+                <span class="tag">GeNN (pygenn & mlgenn)</span><span class="tag">EventProp</span><span class="tag">Spiking Neural Networks</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <!-- Featured thesis -->
+      <div class="paper featured-paper" style="margin-bottom: 1.25rem;">
+        <div class="featured-inner">
+          <div>
+            <div class="paper-label">Featured — Bachelor's Thesis</div>
+            <h3 class="font-serif" style="margin-top: 1rem; font-size: clamp(1.75rem, 3vw, 2.4rem); line-height: 1.1; letter-spacing: -0.02em; color: var(--paper-ink);">
+              Transfer Learning with Spiking Neural Networks
+            </h3>
+            <p style="margin-top: 1.25rem; color: var(--paper-muted); line-height: 1.7; font-size: 15px; max-width: 36rem;">
+              Built an SNN-based recognition system on the Omniglot handwritten character dataset (50 alphabets), outperforming a CNN baseline by 35% accuracy while using 40% less training data. Designed data pipelines converting image/stroke data into spike-train format, and tuned SNN architectures using GeNN with EventProp for spike-timing-based gradient computation.
+            </p>
+            <div class="featured-tags">
+              <span class="paper-tag">Python</span><span class="paper-tag">TensorFlow</span><span class="paper-tag">SNNs</span><span class="paper-tag">Transfer Learning</span><span class="paper-tag">Few-shot Learning</span><span class="paper-tag">CNNs</span><span class="paper-tag">GeNN (pygenn & mlgenn)</span><span class="paper-tag">EventProp</span><span class="paper-tag">Omniglot</span>
+            </div>
+            <div class="featured-footer">
+              framework:
+              <a href="https://github.com/genn-team/genn" target="_blank" rel="noreferrer" class="featured-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+                genn-team/genn
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </a>
+              · pygenn & mlgenn · nvidia-cuda · computational-neuroscience<br>
+              dataset:
+              <a href="https://github.com/brendenlake/omniglot" target="_blank" rel="noreferrer" class="featured-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+                brendenlake/omniglot
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </a>
+              · 1,623 characters · 50 alphabets · 20 different versions
+            </div>
+          </div>
+          <!-- SNN Diagram -->
+          <div>
+            <div class="snn-wrapper">
+              <svg id="snn-svg" viewBox="0 0 460 280" style="width:100%;height:auto;"></svg>
+              <div class="snn-badge">+35% vs CNN baseline</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project cards -->
+      <div class="projects-grid">
+        <!-- Facial Recognition -->
+        <div class="paper project-paper">
+          <div class="paper-label">Data Science · OESON</div>
+          <h3 class="font-serif" style="margin-top: 1rem; font-size: 1.5rem; line-height: 1.15; letter-spacing: -0.01em; color: var(--paper-ink);">Facial Recognition Pipeline</h3>
+          <p style="margin-top: 1rem; color: var(--paper-muted); line-height: 1.7; font-size: 14px;">CNN-based classification system achieving 82% accuracy over 50k+ images, with complete end-to-end preprocessing and augmentation pipelines.</p>
+          <div class="project-paper-tags">
+            <span class="paper-tag">Python</span><span class="paper-tag">NumPy</span><span class="paper-tag">Pandas</span><span class="paper-tag">Matplotlib</span><span class="paper-tag">TensorFlow</span><span class="paper-tag">CNNs</span><span class="paper-tag">Tableau</span><span class="paper-tag">Power BI</span><span class="paper-tag">t-test / ANOVA</span>
+          </div>
+        </div>
+
+        <!-- pocketTHERM -->
+        <div class="paper project-paper">
+          <div class="paper-label">Research · RAEng-funded · Published</div>
+          <h3 class="font-serif" style="margin-top: 1rem; font-size: 1.5rem; line-height: 1.15; letter-spacing: -0.01em; color: var(--paper-ink);">pocketTHERM Web Tool</h3>
+          <p style="margin-top: 1rem; color: var(--paper-muted); line-height: 1.7; font-size: 14px;">Browser-based thermal energy system design tool used by engineers across the UK. 10k+ lines of Python/HTML via PyScript, published in a peer-reviewed journal.</p>
+          <div class="project-paper-tags">
+            <span class="paper-tag">Python</span><span class="paper-tag">PyScript</span><span class="paper-tag">MATLAB → Python</span><span class="paper-tag">JavaScript</span><span class="paper-tag">HTML/CSS</span><span class="paper-tag">Open Source</span>
+          </div>
+        </div>
+
+        <!-- UNESCO -->
+        <div class="paper project-paper">
+          <span class="inprogress-badge"><span class="pulse-dot" style="margin-right:0;"></span>in progress</span>
+          <div class="paper-label">In Progress · Data Analysis</div>
+          <h3 class="font-serif" style="margin-top: 1rem; font-size: 1.5rem; line-height: 1.15; letter-spacing: -0.01em; color: var(--paper-ink);">UNESCO Heritage Atlas</h3>
+          <p style="margin-top: 1rem; color: var(--paper-muted); line-height: 1.7; font-size: 14px;">Exploratory analysis of ~1,200 UNESCO World Heritage sites — clustering by region, criteria and risk, with an interactive map and dashboard surfacing endangered cultural and natural sites over time.</p>
+          <div class="project-paper-tags">
+            <span class="paper-tag">Python</span><span class="paper-tag">Pandas</span><span class="paper-tag">NumPy</span><span class="paper-tag">Matplotlib</span><span class="paper-tag">Seaborn</span>
+          </div>
+          <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--paper-line);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--paper-muted);">
+            dataset: <a href="/data/unesco-heritage.csv" download style="color:var(--paper-accent);">unesco-heritage.csv</a> · ~1.2k sites
+          </div>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="panel edu-panel" style="margin-top: 1.25rem;">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            <h2 class="panel-header-title">Education</h2>
+          </div>
+          <span class="panel-header-hint">2022 – 2025</span>
+        </div>
+        <div style="margin-top:1.5rem;">
+          <h3 style="font-weight:600;">University of Sussex</h3>
+          <div style="font-size:14px;color:var(--primary);margin-top:2px;">BSc Computer Science &amp; Artificial Intelligence</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted-foreground);margin-top:2px;">Upper-Second Class Honours · Brighton, United Kingdom</div>
+          <div class="skill-cat-label" style="margin-top:1.25rem;margin-bottom:0.5rem;">key modules</div>
+          <div class="skill-tags">
+            <span class="tag">Data Structures & Algorithms</span><span class="tag">Databases</span><span class="tag">Software Engineering</span><span class="tag">NLP</span><span class="tag">Program Analysis</span><span class="tag">Machine Learning</span><span class="tag">Acquired Intelligence & Adaptive Behaviour</span><span class="tag">Computer Vision</span><span class="tag">Neural Networks</span><span class="tag">Web Applications and Services</span><span class="tag">Human-Computer Interaction</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="contact">
+      <div class="panel cta-panel">
+        <div class="cta-glow"></div>
+        <div class="cta-inner">
+          <div>
+            <h2 class="cta-title">Let's build something <span class="text-gradient">intelligent.</span></h2>
+            <p class="cta-sub">Open to ML engineering, Data Science, Quantitative Analysis, and Research roles across the UK.</p>
+          </div>
+          <div class="cta-actions">
+            <a href="mailto:code37.piyathida@outlook.com" class="btn-cta glow-ring">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              Get in touch
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>© 2025 Piyathida Suwannakat</span>
+      <span>built with curiosity · last updated may 2026</span>
+    </footer>
+
+  </div>
+</div>
+
+<script>
+  // SNN Diagram
+  (function() {
+    const svg = document.getElementById('snn-svg');
+    if (!svg) return;
+
+    const W = 460, H = 280, padX = 40, padY = 30;
+    const layers = [5, 4, 4, 3];
+    const accent = 'oklch(0.86 0.18 165)';
+    const cols = layers.length;
+
+    const xs = Array.from({ length: cols }, (_, i) =>
+      padX + (i * (W - padX * 2)) / (cols - 1)
+    );
+
+    const positions = layers.map((n, i) =>
+      Array.from({ length: n }, (_, j) => ({
+        x: xs[i],
+        y: padY + (j * (H - padY * 2)) / Math.max(n - 1, 1),
+      }))
+    );
+
+    const ns = 'http://www.w3.org/2000/svg';
+
+    function el(tag, attrs) {
+      const e = document.createElementNS(ns, tag);
+      for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+      return e;
+    }
+
+    // Defs
+    const defs = el('defs', {});
+    svg.appendChild(defs);
+
+    // Edges
+    const edges = [];
+    positions.slice(0, -1).forEach((layer, li) => {
+      layer.forEach((a, ai) => {
+        positions[li + 1].forEach((b, bi) => {
+          const seed = (li * 131 + ai * 17 + bi * 7) % 100;
+          edges.push({ x1: a.x, y1: a.y, x2: b.x, y2: b.y,
+            delay: (seed / 100) * 2.4,
+            dur: 1.4 + ((seed * 13) % 70) / 100 });
+          const line = el('line', {
+            x1: a.x, y1: a.y, x2: b.x, y2: b.y,
+            stroke: accent, 'stroke-opacity': 0.16, 'stroke-width': 0.8
+          });
+          svg.appendChild(line);
+        });
+      });
+    });
+
+    // Spike particles (every 3rd edge)
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced) {
+      edges.filter((_, i) => i % 3 === 0).forEach((e) => {
+        const c = el('circle', { r: 2.2, fill: accent });
+
+        const animCx = el('animate', { attributeName: 'cx', from: e.x1, to: e.x2, dur: `${e.dur}s`, begin: `${e.delay}s`, repeatCount: 'indefinite' });
+        const animCy = el('animate', { attributeName: 'cy', from: e.y1, to: e.y2, dur: `${e.dur}s`, begin: `${e.delay}s`, repeatCount: 'indefinite' });
+        const animOp = el('animate', { attributeName: 'opacity', values: '0;1;1;0', keyTimes: '0;0.1;0.85;1', dur: `${e.dur}s`, begin: `${e.delay}s`, repeatCount: 'indefinite' });
+
+        c.appendChild(animCx);
+        c.appendChild(animCy);
+        c.appendChild(animOp);
+        svg.appendChild(c);
+      });
+    }
+
+    // Nodes
+    positions.forEach((layer, li) => {
+      layer.forEach((p, pi) => {
+        const delay = li * 0.35 + pi * 0.08;
+        const g = el('g', {});
+
+        // Outer pulse
+        const outer = el('circle', { cx: p.x, cy: p.y, r: 11, fill: accent, opacity: 0.12 });
+        if (!reduced) {
+          const ar = el('animate', { attributeName: 'r', values: '11;16;11', dur: '2.2s', begin: `${delay}s`, repeatCount: 'indefinite' });
+          const ao = el('animate', { attributeName: 'opacity', values: '0.12;0.3;0.12', dur: '2.2s', begin: `${delay}s`, repeatCount: 'indefinite' });
+          outer.appendChild(ar);
+          outer.appendChild(ao);
+        }
+        g.appendChild(outer);
+
+        // Inner dot
+        const inner = el('circle', { cx: p.x, cy: p.y, r: 6, fill: accent });
+        if (!reduced) {
+          const ao2 = el('animate', { attributeName: 'opacity', values: '0.7;1;0.7', dur: '2.2s', begin: `${delay}s`, repeatCount: 'indefinite' });
+          inner.appendChild(ao2);
+        }
+        g.appendChild(inner);
+        svg.appendChild(g);
+      });
+    });
+  })();
+</script>
+</body>
+</html>
